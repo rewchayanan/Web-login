@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คำนวณค่างวดรถมอเตอร์ไซค์</title>
+</head>
+<body>
+    <script>
+        function calculateFlatRateLoan(principal, annualInterestRate, months) {
+            const totalInterest = principal * (annualInterestRate / 100) * (months / 12);
+            const totalAmount = principal + totalInterest;
+            return (totalAmount / months).toFixed(2);
+        }
+
+        function calculateEffectiveRateLoan(principal, annualInterestRate, months) {
+            const monthlyInterestRate = (annualInterestRate / 12) / 100;
+            const emi = (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) /
+                        (Math.pow(1 + monthlyInterestRate, months) - 1);
+            return emi.toFixed(2);
+        }
+
+        function calculateLoan() {
+            let loanAmount;
+            let x = true;
+            while(x){
+                    loanAmount = parseInt(prompt("กรุณาใส่ราคารถ (บาท):"));
+                        if (loanAmount > 1000000)
+                        {
+                            console.log('กรุณาใส่ราคารถไม่เกิน 1ล้าน บาท')                    
+                        }
+                        else {
+                            x = false;
+                            console.log('ราคารถ '+loanAmount+' บาท');
+                        }
+                    }
+
+            let downPayment; 
+            x = true;
+            while(x){
+                    downPayment = parseInt(prompt("กรุณาใส่เงินดาวน์ (บาท):"));
+                        if (downPayment > (loanAmount*0.80))
+                        {
+                            console.log('กรุณาใส่เงินดาวน์ให้ต่ำกว่าราคารถ 80%')
+                        }
+                        else {
+                            x = false;
+                            console.log('เงินดาวน์ '+downPayment+' บาท');
+                        }
+                    }
+            
+            let interestRate;
+            x = true;
+            while(x){
+                    interestRate = parseFloat(prompt("กรุณาใส่อัตราดอกเบี้ยต่อปี (%):"));
+                        if (interestRate>23)
+                        {
+                            console.log('กรุณาใส่อัตราดอกเบี้ยให้น้อยกว่าที่กฎหมายกำหนดไม่เกิน 23% ต่อปี')                    
+                        }
+                        else {
+                            x = false;
+                            console.log('อัตราดอกเบี้ยต่อปี '+interestRate+' %');
+                        }
+                    }
+                
+            let months;
+            x = true;
+            while(x){
+                    months = parseInt(prompt("กรุณาใส่จำนวนงวด (เดือน):"), 10);
+                        if (months==12 || months==18 || months==24 || months==30 || months==36 || months==42 || months==48)
+                        {
+                            x = false;
+                            console.log('จำนวนงวด '+months+' เดือน');
+                                              
+                        }
+                        else {
+                            console.log('กรุณาใส่จำนวนงวด 12, 18, 24, 30, 36, 42, 48 ไม่เกิน 48 งวด')  
+                        }
+                    }
+            
+
+            if (isNaN(loanAmount) || isNaN(downPayment) || isNaN(interestRate) || isNaN(months)) {
+                console.log("กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง");
+                return;
+            }
+            const principal = loanAmount - downPayment;
+            const flatRateResult = calculateFlatRateLoan(principal, interestRate, months);
+            const effectiveRateResult = calculateEffectiveRateLoan(principal, interestRate, months);
+            console.log(`Flat Rate: ${flatRateResult} บาท/เดือน`);
+            console.log(`Effective Rate: ${effectiveRateResult} บาท/เดือน`);
+        }
+
+        calculateLoan();
+    </script>
+</body>
+</html>
